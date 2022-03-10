@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository\Account;
+namespace App\Repositories;
 
-use App\Interface\Account\AccountRepositoryInterface;
+use App\Interfaces\AccountRepositoryInterface;
 use App\Models\Account;
 
     class AccountRepository implements AccountRepositoryInterface
@@ -10,19 +10,18 @@ use App\Models\Account;
         public function all()
         {
             $accounts = Account::all();
-            return compact('accounts');
+            return $accounts;
         }
 
         public function create($data)
         {
-            $input = $data->validated();
-            Account::create($input);
+            Account::create($data);
         }
 
         public function find($id) 
         {
             $account = Account::find($id);
-            return compact('account');
+            return $account;
         }
 
         public function update($id, $data)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interface\Account;
+namespace App\Interfaces;
 
 use App\Models\Account;
 

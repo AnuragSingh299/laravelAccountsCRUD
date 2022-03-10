@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AccountRequest;
 use App\Models\Account;
 use Illuminate\Http\Request;
+use App\Interfaces\AccountRepositoryInterface;
+//use App\Repositories\AccountRepository;
+
 
 class AccountController extends Controller
 {
@@ -13,6 +16,11 @@ class AccountController extends Controller
     // {
     //     $this->middleware('auth');
     // }
+
+    public function __construct(AccountRepositoryInterface $account)
+    {
+        $this->accountRepo = $account;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +28,10 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $accounts = Account::all();
-        return view('account.index', compact('accounts'));
+        // $accounts = Account::all();
+        // return view('account.index', compact('accounts')); before repo
+
+        return view('account.index', ['accounts' => $this->accountRepo->all()]);
     }
 
     /**
@@ -42,11 +52,18 @@ class AccountController extends Controller
      */
     public function store(AccountRequest $request)
     {
-        $input = $request->validated();
+        /*$input = $request->validated();
         //$input['hobby'] = $request->input('hobby');
         //$input['hobby'] = implode(',', $request->input('hobby'));
         Account::create($input);
+        return redirect()->route('account.index'); 
+        "before repo"
+        */ 
+
+        $data = $request->validated();
+        $this->accountRepo->create($data);
         return redirect()->route('account.index');
+
     }
 
     /**
@@ -57,8 +74,8 @@ class AccountController extends Controller
      */
     public function show($id)
     {
-        $account = Account::find($id);
-        return view('account.show', compact('account'));
+        //$account = Account::find($id);
+        return view('account.show', ['account' => $this->accountRepo->find($id)]);
     }
 
     /**
@@ -69,8 +86,8 @@ class AccountController extends Controller
      */
     public function edit($id)
     {
-        $account = Account::find($id);
-        return view('account.edit', compact('account'));
+        //$account = Account::find($id);
+        return view('account.edit', ['account' => $this->accountRepo->find($id)]);
         //dd($account);
     }
 
@@ -87,9 +104,14 @@ class AccountController extends Controller
         // $input['hobby'] = implode(',', $request->input('hobby'));
         // Account::where('id', $id)
         //     ->update($input);
-        $input = $request->all();
+        /*$input = $request->all();
         $account = Account::find($id);
         $account->fill($input)->save();            
+        return redirect()->route('account.index');
+        before repo
+        */
+        
+        $this->accountRepo->update($id, $request);
         return redirect()->route('account.index');
     }
 
@@ -101,8 +123,10 @@ class AccountController extends Controller
      */
     public function destroy($id)
     {
-        Account::find($id)
-                ->delete();
+        // Account::find($id)
+        //         ->delete(); before repo
+
+        $this->accountRepo->delete($id);
         
         return redirect()->route('account.index');
     }
