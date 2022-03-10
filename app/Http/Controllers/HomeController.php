@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\AccountController;
+use App\Models\Account;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $accounts = Account::all();
+        return view('account.index', compact('accounts'));
         return view('account.index');
     }
 }

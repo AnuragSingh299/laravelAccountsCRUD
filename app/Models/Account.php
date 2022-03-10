@@ -22,14 +22,15 @@ class Account extends Model
         'country',
     ];
 
-    // public function setHobbyAttribute($value)
-    // {
-    //     $this->attributes['hobby'] = json_encode($value);
-    // }
+    public function setHobbyAttribute($value)
+    {
+        $this->attributes['hobby'] = implode(',', $value);
+    }
 
     // public function getHobbyAttribute($value)
     // {
-    //     return $this->attributes['hobby'] = json_decode($value);
+    //     $hobbies[] = explode(',', $value);
+    //     return $hobbies;
     // }
     
 }
